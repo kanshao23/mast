@@ -31,3 +31,31 @@ Return ONLY a JSON object matching this schema (no markdown fence, no commentary
   "aiNotes": string
 }
 `.trim();
+
+export const BRIEF_PROMPT = (snapshot: string) => `
+You are writing today's portfolio brief for an indie developer running ~15 app projects.
+
+Here is the current portfolio snapshot in YAML:
+\`\`\`
+${snapshot}
+\`\`\`
+
+Produce markdown with these sections in order:
+
+## Top picks today
+- list 1-3 projects to push today.
+- For each, one line "why now": cite north-star + observed signal.
+
+## Zombie warnings
+- list projects with zombie-risk > 0.5 and intent != 维护.
+- Recommend an action: archive, paused, or "explicitly mark维护".
+
+## Shipped-app anomalies
+- list any shipped project with: MRR drop >10% week-over-week, crash-free <99%, rating drop, downloads down >25%.
+- Skip if none.
+
+## Fleet status
+- One line: "X Multica issues open, Y running, Z awaiting your review".
+
+Keep total under 400 words. No filler. No "as an AI". Use the project names exactly as given.
+`.trim();
