@@ -59,3 +59,35 @@ Produce markdown with these sections in order:
 
 Keep total under 400 words. No filler. No "as an AI". Use the project names exactly as given.
 `.trim();
+
+export const DRAFT_ISSUES_PROMPT = (projectName: string, human: string, repoContext: string, existingTitles: string) => `
+You are drafting issue titles + bodies for the project "${projectName}" so its AI agents (running via Multica) can execute them in parallel.
+
+Human-owned strategic context:
+\`\`\`
+${human}
+\`\`\`
+
+Recent code activity (file paths most touched, recent commit messages):
+\`\`\`
+${repoContext}
+\`\`\`
+
+Existing open Multica issues for this project (do NOT duplicate these):
+\`\`\`
+${existingTitles}
+\`\`\`
+
+Produce 3-6 issue drafts that move the project toward its weekly-goal and north-star. Each issue:
+- title: ≤ 70 chars, imperative ("Add X", "Fix Y", "Refactor Z")
+- body: 3-8 lines. Include: what to do, where (file paths if known), how to verify.
+- labels: list of 0-3 tags like "feat", "bug", "ui", "backend".
+
+Return ONLY a JSON object:
+{
+  "drafts": [
+    { "title": string, "body": string, "labels": string[] }
+  ]
+}
+No commentary, no markdown fence.
+`.trim();
