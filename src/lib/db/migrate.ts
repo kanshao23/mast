@@ -17,25 +17,21 @@ export function migrate(): void {
     applied_at TEXT NOT NULL
   )`);
   const applied = new Set(
-    db.prepare("SELECT name FROM schema_migrations").all().map((r: any) => r.name)
+    (db.prepare("SELECT name FROM schema_migrations").all() as { name: string }[]).map(r => r.name)
   );
   const files = readdirSync(MIGRATIONS_DIR).filter(f => f.endsWith(".sql")).sort();
+  const apply = db.transaction((file: string, sql: string) => {
+    db.exec(sql);
+    db.prepare("INSERT INTO schema_migrations (name, applied_at) VALUES (?, ?)").run(
+      file,
+      new Date().toISOString()
+    );
+  });
   for (const file of files) {
     if (applied.has(file)) continue;
     const sql = readFileSync(join(MIGRATIONS_DIR, file), "utf8");
-    db.exec("BEGIN");
-    try {
-      db.exec(sql);
-      db.prepare("INSERT INTO schema_migrations (name, applied_at) VALUES (?, ?)").run(
-        file,
-        new Date().toISOString()
-      );
-      db.exec("COMMIT");
-      console.log(`migration applied: ${file}`);
-    } catch (e) {
-      db.exec("ROLLBACK");
-      throw e;
-    }
+    apply(file, sql);
+    console.log(`migration applied: ${file}`);
   }
 }
 
