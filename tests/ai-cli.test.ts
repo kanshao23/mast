@@ -15,7 +15,7 @@ vi.mock("node:child_process", () => ({
       stdin: { write: () => {}, end: () => {} },
       on: (e: string, cb: Function) => {
         if (e === "close") {
-          handlers[`stdout:data`]?.forEach(h => h(Buffer.from(JSON.stringify({ result: "{\"foo\":\"bar\"}" }))));
+          handlers[`stdout:data`]?.forEach(h => { h(Buffer.from(JSON.stringify({ result: "{\"foo\":\"bar\"}" }))); });
           cb(0);
         }
       },
