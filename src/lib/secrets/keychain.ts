@@ -1,20 +1,21 @@
-import { readFileSync, writeFileSync, mkdirSync, existsSync, chmodSync } from "node:fs";
-import { resolve, dirname } from "node:path";
-import { homedir } from "node:os";
+import keytar from "keytar";
 
-function path() {
-  return resolve(homedir(), ".local/share/mast/secrets.json");
+const SERVICE = "mast";
+
+export async function readSecrets(): Promise<Record<string, string>> {
+  const creds = await keytar.findCredentials(SERVICE);
+  const out: Record<string, string> = {};
+  for (const { account, password } of creds) out[account] = password;
+  return out;
 }
 
-export function readSecrets(): Record<string, string> {
-  const p = path();
-  if (!existsSync(p)) return {};
-  return JSON.parse(readFileSync(p, "utf8"));
+export async function writeSecrets(s: Record<string, string>): Promise<void> {
+  for (const [k, v] of Object.entries(s)) {
+    if (!v) await keytar.deletePassword(SERVICE, k);
+    else await keytar.setPassword(SERVICE, k, v);
+  }
 }
 
-export function writeSecrets(s: Record<string, string>): void {
-  const p = path();
-  mkdirSync(dirname(p), { recursive: true });
-  writeFileSync(p, JSON.stringify(s, null, 2));
-  chmodSync(p, 0o600);
+export async function getSecret(name: string): Promise<string | null> {
+  return keytar.getPassword(SERVICE, name);
 }

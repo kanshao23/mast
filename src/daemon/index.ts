@@ -2,6 +2,7 @@ import { config as dotenvConfig } from "dotenv";
 dotenvConfig({ path: ".env.local" });
 import { migrate } from "../lib/db/migrate";
 import * as jobs from "./jobs";
+import { readSecrets } from "../lib/secrets/keychain";
 
 interface Job { name: string; intervalMs: number; run: () => Promise<void>; lastRun: number; }
 
@@ -28,6 +29,10 @@ async function tick() {
 }
 
 async function main() {
+  const stored = await readSecrets();
+  for (const [k, v] of Object.entries(stored)) {
+    if (!process.env[k]) process.env[k] = v;
+  }
   migrate();
   await tick();
   if (ONCE) return;
