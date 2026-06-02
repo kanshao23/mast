@@ -12,7 +12,7 @@ function expandTilde(p: string): string {
 
 export function getDb(): Database.Database {
   if (_db) return _db;
-  const raw = process.env.PORTFOLIO_DB_PATH ?? "~/.local/share/portfolio-os/db.sqlite";
+  const raw = process.env.MAST_DB_PATH ?? "~/.local/share/mast/db.sqlite";
   const path = expandTilde(raw);
   mkdirSync(dirname(path), { recursive: true });
   _db = new Database(path);

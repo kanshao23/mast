@@ -3,7 +3,7 @@ import { resolve, dirname } from "node:path";
 import { homedir } from "node:os";
 
 function path() {
-  return resolve(homedir(), ".local/share/portfolio-os/secrets.json");
+  return resolve(homedir(), ".local/share/mast/secrets.json");
 }
 
 export function readSecrets(): Record<string, string> {

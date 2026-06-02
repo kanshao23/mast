@@ -13,7 +13,7 @@ export interface DiscoveredRepo {
 }
 
 export function discoverRepos(root?: string): DiscoveredRepo[] {
-  const r = expandTilde(root ?? process.env.PORTFOLIO_REPOS_ROOT ?? "~/dev");
+  const r = expandTilde(root ?? process.env.MAST_REPOS_ROOT ?? "~/dev");
   if (!existsSync(r)) return [];
   const out: DiscoveredRepo[] = [];
   for (const entry of readdirSync(r)) {
