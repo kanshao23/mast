@@ -14,7 +14,7 @@ describe("STATUS.md parse", () => {
 
   it("parses human section", () => {
     const s = parseStatus(SAMPLE);
-    expect(s.human.intent).toBe("主力");
+    expect(s.human.intent).toBe("primary");
     expect(s.human.lifecycle).toBe("shipped-growing");
     expect(s.human.betLevel).toBe(5);
     expect(s.human.northStar).toBe("30 天内冲到日活 500");
@@ -33,6 +33,12 @@ describe("STATUS.md parse", () => {
     const noAi = SAMPLE.split("## AI")[0];
     const s = parseStatus(noAi);
     expect(s.ai).toBeNull();
+  });
+
+  it("maps legacy Chinese intent to English", () => {
+    const md = "# X\n\n## Human\nintent: 主力\nlifecycle: building\n";
+    const s = parseStatus(md);
+    expect(s.human.intent).toBe("primary");
   });
 });
 

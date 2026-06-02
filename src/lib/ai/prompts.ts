@@ -19,7 +19,7 @@ Compute:
 - health-score: 0-10. Weights depend on lifecycle:
   - building: investment 30%, trend 20%, code-output 20%, token-efficiency 10%, alignment-with-north-star 20%
   - shipped-growing / shipped-maintained: downloads 25%, mrr 25%, retention 15%, hours-vs-revenue 20%, crash-free 15%
-- zombie-risk: 0 (active) to 1 (dead). >0.5 means project has not progressed in 14+ days and intent != 维护.
+- zombie-risk: 0 (active) to 1 (dead). >0.5 means project has not progressed in 14+ days and intent != maintenance.
 - ai-notes: 2-4 sentences of plain-text analysis. Mention concrete numbers. Mention zombie warning if applicable. Mention north-star progress if inferable from commits.
 
 Return ONLY a JSON object matching this schema (no markdown fence, no commentary):
@@ -47,8 +47,8 @@ Produce markdown with these sections in order:
 - For each, one line "why now": cite north-star + observed signal.
 
 ## Zombie warnings
-- list projects with zombie-risk > 0.5 and intent != 维护.
-- Recommend an action: archive, paused, or "explicitly mark维护".
+- list projects with zombie-risk > 0.5 and intent != maintenance.
+- Recommend an action: archive, paused, or "explicitly mark maintenance".
 
 ## Shipped-app anomalies
 - list any shipped project with: MRR drop >10% week-over-week, crash-free <99%, rating drop, downloads down >25%.

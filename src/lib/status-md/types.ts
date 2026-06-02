@@ -3,7 +3,12 @@ export type Lifecycle =
   | "shipped-growing" | "shipped-maintained"
   | "paused" | "archived";
 
-export type Intent = "主力" | "试验" | "维护" | "僵尸候选" | "unknown";
+export type Intent =
+  | "primary"           // formerly 主力
+  | "experiment"        // formerly 试验
+  | "maintenance"       // formerly 维护
+  | "zombie-candidate"  // formerly 僵尸候选
+  | "unknown";
 
 export interface HumanSection {
   intent: Intent;

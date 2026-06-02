@@ -1,5 +1,5 @@
 import yaml from "js-yaml";
-import type { ProjectStatus, HumanSection, AiSection } from "./types";
+import type { ProjectStatus, HumanSection, AiSection, Intent } from "./types";
 
 function extractSection(md: string, header: string): string | null {
   const re = new RegExp(`^##\\s+${header}\\s*$`, "m");
@@ -21,8 +21,21 @@ function parseYaml(block: string): Record<string, any> {
 }
 
 function toHuman(data: Record<string, any>): HumanSection {
+  const intentMap: Record<string, Intent> = {
+    "主力": "primary",
+    "试验": "experiment",
+    "维护": "maintenance",
+    "僵尸候选": "zombie-candidate",
+    "primary": "primary",
+    "experiment": "experiment",
+    "maintenance": "maintenance",
+    "zombie-candidate": "zombie-candidate",
+    "unknown": "unknown",
+  };
+  const intentRaw = (data.intent ?? "unknown") as string;
+  const intent: Intent = intentMap[intentRaw] ?? "unknown";
   return {
-    intent: (data.intent ?? "unknown") as HumanSection["intent"],
+    intent,
     lifecycle: (data.lifecycle ?? "unknown") as HumanSection["lifecycle"],
     betLevel: data["bet-level"] ?? null,
     northStar: data["north-star"] ?? "",

@@ -1,7 +1,7 @@
 # Hydrio AI
 
 ## Human
-intent: 主力
+intent: primary
 lifecycle: shipped-growing
 bet-level: 5
 north-star: "30 天内冲到日活 500"
