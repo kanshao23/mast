@@ -1,3 +1,5 @@
+import { config as dotenvConfig } from "dotenv";
+dotenvConfig({ path: ".env.local" });
 import { migrate } from "../lib/db/migrate";
 import * as jobs from "./jobs";
 

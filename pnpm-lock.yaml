@@ -23,6 +23,9 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
