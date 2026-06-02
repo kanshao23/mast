@@ -21,11 +21,11 @@ export class MulticaClient {
   async listIssues(opts: { workspaceId: string; updatedAfter?: string }): Promise<MulticaIssue[]> {
     const qs = new URLSearchParams({ workspace_id: opts.workspaceId });
     if (opts.updatedAfter) qs.set("updated_after", opts.updatedAfter);
-    const r = await this.req<{ issues: MulticaIssue[] }>(`/v1/issues?${qs}`);
+    const r = await this.req<{ issues: MulticaIssue[] }>(`/api/issues?${qs}`);
     return r.issues;
   }
 
   async createIssue(input: CreateIssueInput): Promise<MulticaIssue> {
-    return this.req<MulticaIssue>("/v1/issues", { method: "POST", body: JSON.stringify(input) });
+    return this.req<MulticaIssue>("/api/issues", { method: "POST", body: JSON.stringify(input) });
   }
 }
